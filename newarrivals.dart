@@ -1,0 +1,171 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// ignore: use_key_in_widget_constructors
+class NewArrivals extends StatefulWidget {
+  @override
+  State<NewArrivals> createState() => _NewArrivalsState();
+}
+
+class _NewArrivalsState extends State<NewArrivals> {
+  void submitCart() {}
+  Future<void> submitFav() async {
+    // File file = File(filePath);
+
+    // try {
+    //   await firebase_storage.FirebaseStorage.instance
+    //       .ref('uploads/file-to-upload.png')
+    //       .putFile(file);
+    // }catch (e) {
+    //   // e.g, e.code == 'canceled'
+    // }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ListView(
+        children: [
+          buildListItem('Modern Smart Fridge', '200', 'images/newfridge.jpg'),
+          buildListItem('Iphone 13', '200', 'images/newmobile.jpg'),
+          buildListItem('Tesla Model S', '200', 'images/newcar.jpg'),
+          buildListItem('Adidas Hoodie', '200', 'images/newcloth.jpg'),
+          buildListItem('Fresh Apples', '200', 'images/newgrocery.jpg'),
+        ],
+      ),
+    );
+  }
+
+  Widget buildListItem(String name, String price, String image) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          // ignore: sized_box_for_whitespace
+          Container(
+            width: 220,
+            child: Row(
+              children: [
+                Container(
+                  height: 60.0,
+                  width: 60.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7.0),
+                    color: Colors.blueGrey.shade800,
+                  ),
+                  child: Center(
+                    child: Image.asset(image, height: 50.0, width: 50.0),
+                  ),
+                ),
+                const SizedBox(
+                  width: 20.0,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      name,
+                      // ignore: prefer_const_constructors
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    // ignore: prefer_const_literals_to_create_immutables
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            '\$' + price,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFF68D7F),
+                            ),
+                          ),
+                          // ignore: prefer_const_constructors
+                          SizedBox(
+                            width: 4.0,
+                          ),
+                          // ignore: prefer_adjacent_string_concatenation
+                          Padding(
+                            padding: const EdgeInsets.only(left: 3.0),
+                            // ignore: prefer_adjacent_string_concatenation
+                            child: Text('\$' + '20',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    // decoration: TextDecoration.lineThrough,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey.withOpacity(0.4))),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              submitFav();
+              User? firebaseUser = FirebaseAuth.instance.currentUser;
+              if (firebaseUser != null) {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const AlertDialog(
+                        // ignore: unnecessary_brace_in_string_interps
+                        content: Text('User is logged in'),
+                      );
+                    });
+              } else {
+                // ignore: avoid_print
+                print('error');
+                Navigator.of(context).pushNamed('/login');
+              }
+            },
+            heroTag: name,
+            mini: true,
+            // ignore: prefer_const_constructors
+            child: Center(
+                // ignore: prefer_const_constructors
+                child: Icon(Icons.favorite, color: Colors.white)),
+
+            backgroundColor: Colors.blueGrey.shade800,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              submitCart();
+              User? firebaseUser = FirebaseAuth.instance.currentUser;
+              if (firebaseUser != null) {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const AlertDialog(
+                        // ignore: unnecessary_brace_in_string_interps
+                        content: Text('User is logged in'),
+                      );
+                    });
+              } else {
+                // ignore: avoid_print
+                print('error');
+                Navigator.of(context).pushNamed('/login');
+              }
+            },
+            heroTag: name,
+            mini: true,
+            // ignore: prefer_const_constructors
+            child: Center(
+                // ignore: prefer_const_constructors
+                child: Icon(Icons.add, color: Colors.white)),
+
+            backgroundColor: Colors.blueGrey.shade800,
+          )
+        ],
+      ),
+    );
+  }
+}
